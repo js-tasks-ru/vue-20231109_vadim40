@@ -5,4 +5,4 @@
  * @param {number} b - второе целое
  * @return {number} сумма чисел a и b
  */
-export let sum = (a,b) => a + b;
+export const sum = (a,b) => a + b;
