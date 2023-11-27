@@ -20,7 +20,12 @@ export default defineComponent({
 
   methods: {
     formatDate(date) {
-      return new Date(date).toLocaleDateString(navigator.language)
+      return new Date(date).toLocaleDateString(navigator.language, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        }
+      )
     },
   },
 
@@ -36,7 +41,7 @@ export default defineComponent({
       </li>
       <li>
         <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg" />
-        <time>{{ formatDate(date) }}</time>
+        <time datetime="2020-05-12">{{ formatDate(date) }}</time>
       </li>
     </ul>`,
 });
