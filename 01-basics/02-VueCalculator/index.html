@@ -42,29 +42,33 @@
             <input
             type="radio"
             name="operator"
+            v-model="operation"
             value="sum"
-            @change="result=calculateNumbers('sum')"/> ➕
+            /> ➕
           </label>
           <label>
             <input
               type="radio"
               name="operator"
               value="subtract"
-              @change="result=calculateNumbers('sub')"/> ➖
+              v-model="operation"
+              /> ➖
           </label>
           <label>
             <input
               type="radio"
               name="operator"
               value="multiply"
-              @change="result=calculateNumbers('mul')"/> ✖
+              v-model="operation"
+              /> ✖
           </label>
           <label>
             <input
               type="radio"
               name="operator"
               value="divide"
-              @change="result=calculateNumbers('div')"/> ➗
+              v-model="operation"
+              /> ➗
           </label>
         </div>
 
@@ -77,7 +81,7 @@
 
         <div class="col">=</div>
 
-        <output class="col">{{ result }}</output>
+        <output class="col">{{ calculatedResult }}</output>
       </div>
     </div>
 

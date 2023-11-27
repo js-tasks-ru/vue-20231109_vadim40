@@ -38,8 +38,8 @@ const App = defineComponent({
   },
 
   computed: {
-    filteredEmails() {
-      return this.emails.filter((email) => email.includes(this.substr))
+    markedEmails() {
+      return this.emails.map(email => ({ value: email, marked: email.includes(this.substr) }));
     }
   }
 })
