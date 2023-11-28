@@ -35,9 +35,4 @@ const App = defineComponent({
 
 })
 
-const app = createApp(App);
-const vm = app.mount('#app')
-
-window.vm = vm
-
-
+createApp(App).mount('#app');

@@ -17,7 +17,7 @@
           <input type="search" v-model="substr"/>
         </div>
         <ul>
-          <li v-for="data in markedEmails" :class="data.marked ? 'marked' : undefined">
+          <li v-for="data in markedEmails" :class="{ 'marked': data.marked }">
             {{ data.value }}
           </li>
         </ul>
