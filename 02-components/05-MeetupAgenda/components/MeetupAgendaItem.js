@@ -11,24 +11,24 @@ export default defineComponent({
     }
   },
 
-  methods: {
-    getIcon(type) {
-      return `../../src/assets/icons/item-${agendaItemIcons[type]}.svg`
+  computed: {
+    getIcon() {
+      return `../../src/assets/icons/item-${agendaItemIcons[this.agendaItem.type]}.svg`
     },
-    getTitle(item) {
-      return item.title ? item.title : agendaItemDefaultTitles[item.type]
+    getTitle() {
+      return this.agendaItem.title ? this.agendaItem.title : agendaItemDefaultTitles[this.agendaItem.type]
     }
   },
 
   template: `
     <div class="agenda-item">
       <div class="agenda-item__col">
-        <img :src="getIcon(agendaItem.type)" class="icon" alt="key" />
+        <img :src="getIcon" class="icon" alt="key" />
       </div>
       <div class="agenda-item__col">{{ agendaItem.startsAt + ' - ' + agendaItem.endsAt }}</div>
       <div class="agenda-item__col">
         <h3 class="agenda-item__title">
-          {{ getTitle(agendaItem) }}
+          {{ getTitle }}
         </h3>
         <p v-if="agendaItem.type === 'talk'" class="agenda-item__talk">
           <span>{{ agendaItem.speaker }}r</span>
