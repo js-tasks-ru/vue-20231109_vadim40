@@ -1,18 +1,24 @@
 <template>
   <div class="dropdown dropdown_opened">
-    <button type="button" class="dropdown__toggle dropdown__toggle_icon">
-      <UiIcon icon="tv" class="dropdown__icon" />
-      <span>Title</span>
+    <button
+      type="button"
+      :class="['dropdown__toggle', {'dropdown__toggle_icon': anyOptionHasIcon}]"
+      @click="changeOptionsShowed"
+    >
+      <UiIcon :icon="selectedOption?.icon" class="dropdown__icon" />
+      <span> {{ selectedOption ? selectedOption.text : title }} </span>
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <UiIcon icon="tv" class="dropdown__icon" />
-        Option 1
-      </button>
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <UiIcon icon="tv" class="dropdown__icon" />
-        Option 2
+    <div v-show="optionsShowed" class="dropdown__menu" role="listbox">
+      <button
+        v-for="option in options"
+        @click="changeOptionsShowed(); updateModel(option.value); setSelectedOption(option)"
+        :class="['dropdown__item', {'dropdown__item_icon': anyOptionHasIcon}]"
+        role="option"
+        type="button"
+      >
+        <UiIcon :icon="option.icon" class="dropdown__icon" />
+        {{ option.text }}
       </button>
     </div>
   </div>
@@ -25,6 +31,49 @@ export default {
   name: 'UiDropdown',
 
   components: { UiIcon },
+
+  data() {
+    return {
+      optionsShowed: false,
+    }
+  },
+
+  methods: {
+    changeOptionsShowed() {
+      this.optionsShowed = !this.optionsShowed
+    },
+    updateModel(val) {
+      this.$emit('update:modelValue', val);
+    },
+    setSelectedOption(option) {
+      this.selectedOption = option
+    }
+  },
+
+  props: {
+    options: {
+      type: Array,
+      required: true,
+    },
+    modelValue: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true
+    }
+  },
+
+  computed: {
+    selectedOption() {
+        return this.options.find(option => option.value === this.modelValue);
+    },
+    anyOptionHasIcon() {
+      return this.options.some(option => option.icon);
+    }
+
+  }
 };
 </script>
 
