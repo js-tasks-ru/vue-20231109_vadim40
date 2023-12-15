@@ -19,7 +19,7 @@ export default defineComponent({
   },
 
   computed: {
-    localeFormatDate() {
+    localizedFormatDate() {
       return new Date(this.date).toLocaleDateString(navigator.language, {
           year: 'numeric',
           month: 'long',
@@ -35,16 +35,16 @@ export default defineComponent({
   template: `
     <ul class="meetup-info">
       <li>
-        <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-user.svg" />
+        <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-user.svg"/>
         {{ organizer }}
       </li>
       <li>
-        <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-map.svg" />
+        <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-map.svg"/>
         {{ place }}
       </li>
       <li>
-        <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg" />
-        <time :datetime="ISOFormatDate">{{ localeFormatDate }}</time>
+        <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg"/>
+        <time :datetime="ISOFormatDate">{{ localizedFormatDate }}</time>
       </li>
     </ul>`,
 });

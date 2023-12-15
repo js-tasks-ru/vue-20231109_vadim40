@@ -18,31 +18,30 @@ export default {
 </script>
 
 <style scoped>
-:slotted(*) {
-  .fade-list {
-    position: relative;
-  }
-
-  .fade-list > * {
-    opacity: 1;
-    transition: opacity 0.3s ease-out;
-  }
-
-  .fade-list .fade-list-leave-active {
-    position: absolute !important;
-    left: 0;
-    right: 0;
-  }
-
-  .fade-list .fade-list-enter-from,
-  .fade-list .fade-list-leave-to {
-    opacity: 0;
-  }
-
-  .fade-list .fade-list-move {
-    transition: transform 0.3s;
-  }
+.fade-list  {
+  position: relative;
 }
+
+.fade-list > :deep(*) {
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+.fade-list :deep(.fade-list-leave-active) {
+  position: absolute !important;
+  left: 0;
+  right: 0;
+}
+
+.fade-list :deep(.fade-list-enter-from),
+.fade-list :deep(.fade-list-leave-to) {
+  opacity: 0;
+}
+
+.fade-list :deep(.fade-list-move) {
+  transition: transform 0.3s;
+}
+
 /* _transitions.css */
 
 

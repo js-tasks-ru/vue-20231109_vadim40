@@ -12,7 +12,7 @@
     <div v-show="optionsShowed" class="dropdown__menu" role="listbox">
       <button
         v-for="option in options"
-        @click="changeOptionsShowed(); updateModel(option.value); setSelectedOption(option)"
+        @click="handleClick(option)"
         :class="['dropdown__item', {'dropdown__item_icon': anyOptionHasIcon}]"
         role="option"
         type="button"
@@ -39,15 +39,16 @@ export default {
   },
 
   methods: {
+    handleClick(option) {
+      this.changeOptionsShowed();
+      this.updateModel(option.value);
+    },
     changeOptionsShowed() {
       this.optionsShowed = !this.optionsShowed
     },
     updateModel(val) {
       this.$emit('update:modelValue', val);
     },
-    setSelectedOption(option) {
-      this.selectedOption = option
-    }
   },
 
   props: {

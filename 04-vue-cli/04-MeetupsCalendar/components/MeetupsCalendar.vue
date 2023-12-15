@@ -41,30 +41,19 @@ export default {
   data() {
     return {
       'date': new Date(),
-      'monthsFirstWeekday': undefined,
-      'monthsTotalNumberOfDays': undefined,
     }
   },
 
   created() {
     this.date = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
-    this.calculateMonthProperties()
   },
 
   methods: {
-    calculateMonthProperties() {
-      this.monthsFirstWeekday = new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
-      this.monthsTotalNumberOfDays = new Date(
-          this.date.getFullYear(), this.date.getMonth() + 1, 0
-      ).getDate()
-    },
     increaseMonth() {
       this.date = new Date(this.date.setMonth(this.date.getMonth() + 1));
-      this.calculateMonthProperties()
     },
     decreaseMonth() {
       this.date = new Date(this.date.setMonth(this.date.getMonth() - 1))
-      this.calculateMonthProperties()
     },
   },
 
@@ -75,6 +64,13 @@ export default {
         year: 'numeric',
       })
     },
+    monthsFirstWeekday() {
+      return new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
+    },
+    monthsTotalNumberOfDays() {
+      return new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate()
+    },
+
     calendar() {
       let calendarCells = []
       let i = 1

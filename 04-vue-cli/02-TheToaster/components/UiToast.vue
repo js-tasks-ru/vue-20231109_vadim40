@@ -1,5 +1,5 @@
 <template>
-  <div :class="`toast toast_${type}`">
+  <div class="toast" :class="`toast_${type}`">
     <UiIcon class="toast__icon" :icon="toastIcon" />
     <span>{{ message }}</span>
   </div>
