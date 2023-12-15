@@ -1,6 +1,11 @@
 import { defineComponent } from '../vendor/vue.esm-browser.js';
 import UiAlert from './UiAlert.js';
 import UiContainer from './UiContainer.js';
+import MeetupAgendaItem from "../../05-MeetupAgenda/components/MeetupAgendaItem";
+import MeetupAgenda from "../../05-MeetupAgenda/components/MeetupAgenda";
+import MeetupCover from "../../03-MeetupCover/components/MeetupCover";
+import MeetupDescription from "../../02-MeetupDescription/components/MeetupDescription";
+import MeetupInfo from "../../04-MeetupInfo/components/MeetupInfo";
 
 export default defineComponent({
   name: 'MeetupView',
@@ -8,6 +13,11 @@ export default defineComponent({
   components: {
     UiAlert,
     UiContainer,
+    MeetupAgenda,
+    MeetupAgendaItem,
+    MeetupInfo,
+    MeetupCover,
+    MeetupDescription
   },
 
   props: {
@@ -19,21 +29,21 @@ export default defineComponent({
 
   template: `
     <div>
-      <!-- meetup cover-->
+      <MeetupCover :title="meetup.title" :image="meetup.image"/>
 
       <UiContainer>
         <div class="meetup">
           <div class="meetup__content">
             <h3>Описание</h3>
-            <!-- meetup description -->
+            <MeetupDescription :description="meetup.description"/>
 
             <h3>Программа</h3>
-            <!-- meetup agenda -->
-            <UiAlert>Программа пока пуста...</UiAlert>
+            <MeetupAgenda v-if="meetup.agenda?.length > 0" :agenda="meetup.agenda"/>
+            <UiAlert v-else>Программа пока пуста...</UiAlert>
           </div>
-          <div class="meetup__aside">
-            <!-- meetup info -->
-          </div>
+        <div class="meetup__aside">
+          <MeetupInfo :organizer="meetup.organizer" :date="meetup.date" :place="meetup.place"/>
+        </div>
         </div>
       </UiContainer>
     </div>`,

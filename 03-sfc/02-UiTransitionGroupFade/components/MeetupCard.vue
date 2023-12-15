@@ -18,7 +18,7 @@
         </li>
         <li class="meetup-info__item">
           <UiIcon class="meetup-info__icon" icon="cal-lg" />
-          <time :datetime="isoDate">{{ localeDate }}</time>
+          <time :datetime="isoDate">{{ localizedDate }}</time>
         </li>
       </ul>
     </template>
@@ -51,7 +51,7 @@ export default {
       return new Date(this.meetup.date).toISOString().split('T')[0];
     },
 
-    localeDate() {
+    localizedDate() {
       return new Date(this.meetup.date).toLocaleString(navigator.language, {
         year: 'numeric',
         month: 'long',

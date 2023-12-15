@@ -14,13 +14,12 @@
     <div id="app" style="margin-top: 2rem">
       <div class="container">
         <div class="form-group">
-          <input type="search" />
+          <input type="search" v-model="substr"/>
         </div>
         <ul>
-          <li>Email</li>
-          <li class="marked">Email</li>
-          <li>...</li>
-          <li>Email</li>
+          <li v-for="data in markedEmails" :class="{ 'marked': data.marked }">
+            {{ data.value }}
+          </li>
         </ul>
       </div>
     </div>
