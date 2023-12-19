@@ -14,7 +14,7 @@
           </div>
         </UiFormGroup>
         <div class="form__buttons">
-          <button type="submit" class="button button_primary button_block" @click="handleSubmit()">Войти</button>
+          <button type="submit" class="button button_primary button_block">Войти</button>
         </div>
         <div class="form__append">Нет аккаунта?
           <RouterLink :to="{name: 'register'}" class="link">Зарегистрируйтесь</RouterLink>
@@ -38,8 +38,8 @@ export default {
 
   methods: {
     handleSubmit() {
-      if (this.$route.query?.from) {
-        this.$router.push(this.$route.query?.from)
+      if (this.$route.query.from) {
+        this.$router.push(this.$route.query.from)
       }
       else {
         this.$router.push({name: 'index'})
