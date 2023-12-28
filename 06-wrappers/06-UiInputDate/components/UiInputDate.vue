@@ -2,8 +2,8 @@
   <UiInput
       :type="type"
       :step="step"
-      :value="formattedModelValue"
       @input="formattedModelValue = ($event.target.valueAsNumber)"
+      @update:model-value="formattedModelValue = $event"
       v-model="formattedModelValue"
       v-bind="$attrs"
   >

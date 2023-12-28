@@ -1,12 +1,11 @@
 <template>
   <div class="image-uploader">
     <label
-      :class="['image-uploader__preview', {'image-uploader__preview-loading': isLoading}]"
+      class="image-uploader__preview"
+      :class="{'image-uploader__preview-loading': isLoading}"
       :style="{'--bg-url': `url('${shownImage}')`}"
     >
-      <span v-show="!shownImage" class="image-uploader__text">Загрузить изображение</span>
-      <span v-show="isLoading" class="image-uploader__text">Загрузка...</span>
-      <span v-show="shownImage" class="image-uploader__text">Удалить изображение</span>
+      <span class="image-uploader__text">{{ imageStatusText }}</span>
       <input
         ref="fileInput"
         type="file"
@@ -31,7 +30,7 @@ export default {
 
   data() {
     return {
-      image: null,
+      image: this.preview,
       isLoading: false
     }
   },
@@ -70,6 +69,16 @@ export default {
   computed: {
     shownImage() {
       return this.image || this.preview
+    },
+    imageStatusText() {
+      if (this.isLoading) {
+        return 'Загрузка...'
+      }
+      if (this.image) {
+        return 'Удалить изображение'
+      } else {
+        return 'Загрузить изображение'
+      }
     }
   },
 

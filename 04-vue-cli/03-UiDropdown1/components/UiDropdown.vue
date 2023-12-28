@@ -2,7 +2,8 @@
   <div class="dropdown dropdown_opened">
     <button
       type="button"
-      :class="['dropdown__toggle', {'dropdown__toggle_icon': anyOptionHasIcon}]"
+      class="dropdown__toggle"
+      :class="{'dropdown__toggle_icon': anyOptionHasIcon}"
       @click="changeOptionsShowed"
     >
       <UiIcon :icon="selectedOption?.icon" class="dropdown__icon" />
@@ -13,7 +14,8 @@
       <button
         v-for="option in options"
         @click="handleClick(option)"
-        :class="['dropdown__item', {'dropdown__item_icon': anyOptionHasIcon}]"
+        class="dropdown__item"
+        :class="{'dropdown__item_icon': anyOptionHasIcon}"
         role="option"
         type="button"
       >

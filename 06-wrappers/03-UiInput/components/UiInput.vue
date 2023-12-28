@@ -4,18 +4,21 @@
       'input-group_icon-left': hasLeftIcon(),
       'input-group_icon-right': hasRightIcon(),
     }">
-    <div class="input-group__icon" v-if="hasIcon()">
+    <div class="input-group__icon" v-if="hasLeftIcon()">
       <slot name="left-icon"></slot>
-      <slot name="right-icon"></slot>
     </div>
     <component
       :is="inputType"
       ref="input"
       v-bind="$attrs"
       :value="modelValue"
-      :class="['form-control', {'form-control_rounded': rounded, 'form-control_sm': small}]"
+      class="form-control"
+      :class="{'form-control_rounded': rounded, 'form-control_sm': small}"
       @input="$emit('update:modelValue', $event.target.value)"
     />
+    <div class="input-group__icon" v-if="hasRightIcon() ">
+      <slot name="right-icon"></slot>
+    </div>
   </div>
 </template>
 

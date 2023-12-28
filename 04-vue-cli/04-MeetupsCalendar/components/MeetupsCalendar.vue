@@ -23,7 +23,8 @@
     <div class="calendar-view__grid">
       <div
         v-for="cell in calendar"
-        :class="['calendar-view__cell', {'calendar-view__cell_inactive': cell.inactive}]"
+        class="calendar-view__cell"
+        :class="{'calendar-view__cell_inactive': cell.inactive}"
         tabindex="0"
       >
         <div class="calendar-view__cell-day">{{ cell.number }}</div>

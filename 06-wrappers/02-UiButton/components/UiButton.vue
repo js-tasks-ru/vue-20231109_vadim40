@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" :type="componentType" :class="['button', 'button_' + variant, {'button_block': block}]">
+  <component :is="tag" :type="componentType" class="button" :class="['button_' + variant, {'button_block': block}]">
     <slot></slot>
   </component>
 </template>
