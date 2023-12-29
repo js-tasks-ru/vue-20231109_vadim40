@@ -2,9 +2,8 @@
   <UiInput
       :type="type"
       :step="step"
+      :value="formattedModelValue"
       @input="formattedModelValue = ($event.target.valueAsNumber)"
-      @update:model-value="formattedModelValue = $event"
-      v-model="formattedModelValue"
       v-bind="$attrs"
   >
     <template v-for="slotName in Object.keys($slots)" #[slotName]>
@@ -52,7 +51,6 @@ export default {
       },
 
       set(value) {
-        console.log(value)
         this.$emit('update:modelValue', value)
       },
     }
