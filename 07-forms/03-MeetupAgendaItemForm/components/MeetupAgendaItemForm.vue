@@ -102,67 +102,64 @@ export default {
   },
 
   watch: {
-    clonedLocalAgendaItem: {
+    localAgendaItem: {
       deep: true,
-      handler(newVal, oldVal) {
-        if (newVal.startsAt !== oldVal.startsAt && oldVal.endsAt) {
-          const startsAtDiffInMS = new Date(`1970-01-01T${oldVal.endsAt}`).getTime() -
-            new Date(`1970-01-01T${oldVal.startsAt}`).getTime();
-          if (startsAtDiffInMS !== 0) {
-            const newEndsAt = new Date(new Date(`1970-01-01T${newVal.startsAt}`).getTime() + startsAtDiffInMS);
-            this.localAgendaItem.endsAt = newEndsAt.toLocaleString().substring(12, 17);
-          }
-        }
-        console.log('tut')
-        this.$emit('update:agendaItem', {...newVal});
+      handler() {
+        this.$emit('update:agendaItem', {...this.localAgendaItem});
       },
+    },
+    'localAgendaItem.startsAt'(newStartsAt, oldStartAt) {
+      if (this.localAgendaItem.endsAt) {
+        console.log('tut')
+        const startsAtDiffInMS = new Date(`1970-01-01T${this.localAgendaItem.endsAt}`).getTime() -
+          new Date(`1970-01-01T${oldStartAt}`).getTime();
+        if (startsAtDiffInMS !== 0) {
+          const newEndsAt = new Date(new Date(`1970-01-01T${newStartsAt}`).getTime() + startsAtDiffInMS);
+          this.localAgendaItem.endsAt = newEndsAt.toLocaleString().substring(12, 17);
+        }
+      }
     },
   },
 
   computed: {
-    clonedLocalAgendaItem() {
-      return {...this.localAgendaItem}
-    },
-
     additionalFields() {
       let fields = [{
         label: 'Нестандартный текст (необязательно)',
         name: 'title',
-        model: this.localAgendaItem.title
+        model: 'title'
       }]
-      if (this.localAgendaItem.type === 'talk' || this.localAgendaItem.type === 'other') {
-        console.log('inside double condition')
-        fields = [{
-          label: 'Описание',
-          name: 'description',
-          model: 'description'
-        }]
-        if (this.localAgendaItem.type === 'talk') {
-        console.log('inside talk condition')
-
-          fields = fields.concat(
-            [{
-              label: 'Тема',
-              name: 'title',
-              model: 'title'
-            },
-              {
-                label: 'Докладчик',
-                name: 'speaker',
-                model: 'speaker'
-              },]
-          )
-        } else {
-        console.log('inside other condition')
-
-          fields.push(
-            {
-              label: 'Заголовок',
-              name: 'title',
-              model: 'title'
-            },
-          )
-        }
+      if (this.localAgendaItem.type === 'talk') {
+        fields = [
+          {
+            label: 'Тема',
+            name: 'title',
+            model: 'title'
+          },
+          {
+            label: 'Докладчик',
+            name: 'speaker',
+            model: 'speaker'
+          },
+          {
+            label: 'Описание',
+            name: 'description',
+            model: 'description'
+          }
+        ]
+      }
+      if (this.localAgendaItem.type === 'other') {
+        fields = [
+          {
+            label: 'Заголовок',
+            name: 'title',
+            model: 'title'
+          },
+          {
+            label: 'Описание',
+            name: 'description',
+            model: 'description'
+          }
+        ]
       }
       return fields
     }
