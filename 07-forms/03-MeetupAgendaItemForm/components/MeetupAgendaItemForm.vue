@@ -110,15 +110,14 @@ export default {
     },
     'localAgendaItem.startsAt'(newStartsAt, oldStartAt) {
       if (this.localAgendaItem.endsAt) {
-        console.log('tut')
         const startsAtDiffInMS = new Date(`1970-01-01T${this.localAgendaItem.endsAt}`).getTime() -
           new Date(`1970-01-01T${oldStartAt}`).getTime();
         if (startsAtDiffInMS !== 0) {
           const newEndsAt = new Date(new Date(`1970-01-01T${newStartsAt}`).getTime() + startsAtDiffInMS);
-          this.localAgendaItem.endsAt = newEndsAt.toLocaleString().substring(12, 17);
+          this.localAgendaItem.endsAt = newEndsAt.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
         }
       }
-    },
+    }
   },
 
   computed: {
