@@ -1,8 +1,20 @@
 <template>
   <div class="image-uploader">
-    <label class="image-uploader__preview image-uploader__preview-loading" style="--bg-url: url('/link.jpeg')">
-      <span class="image-uploader__text">Загрузить изображение</span>
-      <input type="file" accept="image/*" class="image-uploader__input" />
+    <label
+      class="image-uploader__preview"
+      :class="{'image-uploader__preview-loading': isLoading}"
+      :style="{'--bg-url': `url('${shownImage}')`}"
+    >
+      <span class="image-uploader__text">{{ imageStatusText }}</span>
+      <input
+        ref="fileInput"
+        type="file"
+        accept="image/*"
+        class="image-uploader__input"
+        v-bind="$attrs"
+        @change="handleFile"
+        @click="!isLoading && shownImage ? clearImage() : null"
+      />
     </label>
   </div>
 </template>
@@ -10,6 +22,71 @@
 <script>
 export default {
   name: 'UiImageUploader',
+
+  props: {
+    preview: String,
+    uploader: Function
+  },
+
+  data() {
+    return {
+      image: this.preview,
+      isLoading: false
+    }
+  },
+
+  methods: {
+    async handleFile(event) {
+      this.isLoading = true;
+      const file = event.target.files[0];
+      this.$emit('select', file);
+
+      if (this.uploader) {
+        try {
+          let data = await this.uploader(file);
+          this.$emit('upload', data);
+          this.image = URL.createObjectURL(data);
+        } catch (err) {
+          this.$emit('error', err);
+          this.$refs.fileInput.value = null;
+        }
+
+      }
+      else {
+        this.image = file
+      }
+      this.isLoading = false;
+    },
+    clearImage() {
+      if (this.shownImage) {
+        this.$emit('remove')
+        this.image = null
+        this.$refs.fileInput.value = null
+      }
+    },
+  },
+
+  computed: {
+    shownImage() {
+      return this.image || this.preview
+    },
+    imageStatusText() {
+      if (this.isLoading) {
+        return 'Загрузка...'
+      }
+      if (this.image) {
+        return 'Удалить изображение'
+      } else {
+        return 'Загрузить изображение'
+      }
+    }
+  },
+
+  emits: ['select', 'upload', 'error', 'remove'],
+
+  inheritAttrs: false
+
+
 };
 </script>
 

@@ -1,37 +1,41 @@
 <template>
   <fieldset class="agenda-item-form">
-    <button type="button" class="agenda-item-form__remove-button">
-      <UiIcon icon="trash" />
+    <button type="button" class="agenda-item-form__remove-button" @click="$emit('remove')">
+      <UiIcon icon="trash"/>
     </button>
 
     <UiFormGroup>
-      <UiDropdown title="Тип" :options="$options.agendaItemTypeOptions" name="type" />
+      <UiDropdown title="Тип" :options="$options.agendaItemTypeOptions" name="type" v-model="localAgendaItem.type"/>
     </UiFormGroup>
 
     <div class="agenda-item-form__row">
       <div class="agenda-item-form__col">
         <UiFormGroup label="Начало">
-          <UiInput type="time" placeholder="00:00" name="startsAt" />
+          <UiInput
+            type="time"
+            placeholder="00:00"
+            name="startsAt"
+            v-model="localAgendaItem.startsAt"
+          />
         </UiFormGroup>
       </div>
       <div class="agenda-item-form__col">
         <UiFormGroup label="Окончание">
-          <UiInput type="time" placeholder="00:00" name="endsAt" />
+          <UiInput type="time" placeholder="00:00" name="endsAt" v-model="localAgendaItem.endsAt"/>
         </UiFormGroup>
       </div>
     </div>
 
-    <UiFormGroup label="Тема">
-      <UiInput name="title" />
+    <UiFormGroup v-for="field in additionalFields" :label="field.label">
+      <UiInput :multiline="field.name === 'description'" :name="field.name" v-model="localAgendaItem[field.model]"/>
     </UiFormGroup>
-    <UiFormGroup label="Докладчик">
-      <UiInput name="speaker" />
-    </UiFormGroup>
-    <UiFormGroup label="Описание">
-      <UiInput multiline name="description" />
-    </UiFormGroup>
-    <UiFormGroup label="Язык">
-      <UiDropdown title="Язык" :options="$options.talkLanguageOptions" name="language" />
+    <UiFormGroup v-if="localAgendaItem.type === 'talk'" label="Язык">
+      <UiDropdown
+        title="Язык"
+        :options="$options.talkLanguageOptions"
+        name="language"
+        v-model="localAgendaItem.language"
+      />
     </UiFormGroup>
   </fieldset>
 </template>
@@ -71,9 +75,9 @@ const agendaItemTypeOptions = Object.entries(agendaItemDefaultTitles).map(([type
 }));
 
 const talkLanguageOptions = [
-  { value: null, text: 'Не указано' },
-  { value: 'RU', text: 'RU' },
-  { value: 'EN', text: 'EN' },
+  {value: null, text: 'Не указано'},
+  {value: 'RU', text: 'RU'},
+  {value: 'EN', text: 'EN'},
 ];
 
 export default {
@@ -82,7 +86,7 @@ export default {
   agendaItemTypeOptions,
   talkLanguageOptions,
 
-  components: { UiIcon, UiFormGroup, UiInput, UiDropdown },
+  components: {UiIcon, UiFormGroup, UiInput, UiDropdown},
 
   props: {
     agendaItem: {
@@ -90,6 +94,77 @@ export default {
       required: true,
     },
   },
+
+  data() {
+    return {
+      localAgendaItem: {...this.agendaItem}
+    }
+  },
+
+  watch: {
+    localAgendaItem: {
+      deep: true,
+      handler() {
+        this.$emit('update:agendaItem', {...this.localAgendaItem});
+      },
+    },
+    'localAgendaItem.startsAt'(newStartsAt, oldStartAt) {
+      if (this.localAgendaItem.endsAt) {
+        const startsAtDiffInMS = new Date(`1970-01-01T${this.localAgendaItem.endsAt}`).getTime() -
+          new Date(`1970-01-01T${oldStartAt}`).getTime();
+        if (startsAtDiffInMS !== 0) {
+          const newEndsAt = new Date(new Date(`1970-01-01T${newStartsAt}`).getTime() + startsAtDiffInMS);
+          this.localAgendaItem.endsAt = newEndsAt.toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'});
+        }
+      }
+    }
+  },
+
+  computed: {
+    additionalFields() {
+      let fields = [{
+        label: 'Нестандартный текст (необязательно)',
+        name: 'title',
+        model: 'title'
+      }]
+      if (this.localAgendaItem.type === 'talk') {
+        fields = [
+          {
+            label: 'Тема',
+            name: 'title',
+            model: 'title'
+          },
+          {
+            label: 'Докладчик',
+            name: 'speaker',
+            model: 'speaker'
+          },
+          {
+            label: 'Описание',
+            name: 'description',
+            model: 'description'
+          }
+        ]
+      }
+      if (this.localAgendaItem.type === 'other') {
+        fields = [
+          {
+            label: 'Заголовок',
+            name: 'title',
+            model: 'title'
+          },
+          {
+            label: 'Описание',
+            name: 'description',
+            model: 'description'
+          }
+        ]
+      }
+      return fields
+    }
+  },
+
+  emits: ['remove', 'update:agendaItem']
 };
 </script>
 
