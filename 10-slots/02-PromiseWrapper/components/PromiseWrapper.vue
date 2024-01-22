@@ -1,9 +1,7 @@
 <template>
-  <div>
     <slot name="pending" v-if="state === 'pending'"></slot>
-    <slot name="fulfilled" v-if="state === 'fulfilled'" :result="result"></slot>
-    <slot name="rejected" v-if="state === 'rejected'" :error="error"></slot>
-  </div>
+    <slot name="fulfilled" v-else-if="state === 'fulfilled'" :result="result"></slot>
+    <slot name="rejected" v-else-if="state === 'rejected'" :error="error"></slot>
 </template>
 
 <script>
