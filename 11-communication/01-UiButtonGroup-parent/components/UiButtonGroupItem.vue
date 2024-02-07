@@ -1,5 +1,13 @@
 <template>
-  <button class="button-group__button button-group__button_active" type="button" aria-selected="false">Button</button>
+  <button
+    class="button-group__button"
+    :class="{'button-group__button_active': isActive}"
+    type="button"
+    :aria-selected="isActive"
+    @click="updateModel"
+    >
+    <slot></slot>
+  </button>
 </template>
 
 <script>
@@ -10,6 +18,28 @@ export default {
     value: {
       required: true,
     },
+  },
+
+  computed: {
+    parentModel() {
+      return this.$parent.modelValue
+    },
+
+    isActive() {
+      return this.value === this.parentModel
+    }
+  },
+
+  mounted() {
+    if (this.$parent.$options.name !== 'UiButtonGroup') {
+      console.warn('UiButtonGroupItem should be used inside UiButtonGroup.')
+    }
+  },
+
+  methods: {
+    updateModel() {
+      this.$parent.$emit('update:modelValue', this.value)
+    }
   },
 };
 </script>
